@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AP CS Exam Email Marketing Calendar</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide-react@latest/dist/lucide-react.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const { Calendar, Mail, Copy, Check, ChevronDown, ChevronUp } = lucideReact;
+
+    const EmailCalendar = () => {
+      const [expandedMonth, setExpandedMonth] = useState('November');
+      const [copiedIndex, setCopiedIndex] = useState(null);
+
+      const copyToClipboard = (text, index) => {
+        navigator.clipboard.writeText(text);
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2000);
+      };
+
+      const calendar = [
+        {
+          month: "November",
+          theme: "Foundation & Fear-Busting",
+          emails: [
+            {
+              week: "Week 1",
+              subject: "Your brain is lying to you about AP CS...",
+              hook: "Fear/Pattern Interrupt",
+              cta: "Reply 'READY' to see how we turn C students into 5-scorers",
+              prompt: "Write a marketing email using the 'brain lying' angle..."
+            },
+            {
+              week: "Week 1",
+              subject: "[FIRSTNAME] - This is NOT another coding course",
+              hook: "Differentiation",
+              cta: "Book a 15-min Strategy Call - 3 spots left this week",
+              prompt: "Create an email that positions our AP CS prep..."
+            }
+          ]
+        },
+        {
+          month: "December",
+          theme: "Urgency & Holiday Momentum",
+          emails: [
+            {
+              week: "Week 1",
+              subject: "While everyone's baking cookies, smart students are...",
+              hook: "Opportunity/Contrast",
+              cta: "Start now, thank yourself in May - Book call",
+              prompt: "Create an email about using the holiday season strategically..."
+            }
+          ]
+        }
+      ];
+
+      return (
+        <div className="max-w-6xl mx-auto p-6">
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Calendar className="w-8 h-8 text-indigo-600" />
+              <h1 className="text-3xl font-bold text-gray-800">AP CS Exam Email Marketing Calendar</h1>
+            </div>
+            <p className="text-gray-600 mb-2">November 2024 - July 2025 | 3 Emails per Week</p>
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <Mail className="w-4 h-4" />
+              <span>Total: 96+ high-converting emails with CustomGPT prompts</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {calendar.map((month, monthIndex) => (
+              <div key={monthIndex} className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <button
+                  onClick={() => setExpandedMonth(expandedMonth === month.month ? null : month.month)}
+                  className="w-full p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                >
+                  <div className="text-left">
+                    <h2 className="text-2xl font-bold text-indigo-600">{month.month}</h2>
+                    <p className="text-gray-600 mt-1">Theme: {month.theme}</p>
+                    <p className="text-sm text-gray-500 mt-1">{month.emails.length} emails this month</p>
+                  </div>
+                  {expandedMonth === month.month ? (
+                    <ChevronUp className="w-6 h-6 text-gray-400" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-gray-400" />
+                  )}
+                </button>
+
+                {expandedMonth === month.month && (
+                  <div className="border-t border-gray-200">
+                    {month.emails.map((email, emailIndex) => (
+                      <div key={emailIndex} className="p-6 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-semibold">
+                                {email.week}
+                              </span>
+                              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                                {email.hook}
+                              </span>
+                            </div>
+                            <h3 className="text-lg font-bold text-gray-800 mb-2">
+                              📧 Subject: {email.subject}
+                            </h3>
+                            <p className="text-sm text-green-600 font-medium mb-1">
+                              ✅ CTA: {email.cta}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 border-l-4 border-indigo-500">
+                          <div className="flex items-start justify-between mb-2">
+                            <h4 className="font-semibold text-gray-700 flex items-center gap-2">
+                              <span className="text-indigo-600">🤖</span>
+                              CustomGPT Prompt:
+                            </h4>
+                            <button
+                              onClick={() => copyToClipboard(email.prompt, `${monthIndex}-${emailIndex}`)}
+                              className="flex items-center gap-1 px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors text-sm"
+                            >
+                              {copiedIndex === `${monthIndex}-${emailIndex}` ? (
+                                <>
+                                  <Check className="w-4 h-4" />
+                                  Copied!
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-4 h-4" />
+                                  Copy
+                                </>
+                              )}
+                            </button>
+                          </div>
+                          <p className="text-gray-700 text-sm leading-relaxed">{email.prompt}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
+            <h3 className="font-bold text-lg text-gray-800 mb-3">📝 Usage Instructions for VA:</h3>
+            <ul className="space-y-2 text-gray-700 text-sm">
+              <li><strong>1.</strong> Click "Copy" to copy the CustomGPT prompt</li>
+              <li><strong>2.</strong> Paste into your CustomGPT tool</li>
+              <li><strong>3.</strong> Use or adjust subject lines as needed</li>
+              <li><strong>4.</strong> Make CTA prominent (button/bold)</li>
+              <li><strong>5.</strong> Send emails Mon/Wed/Fri</li>
+              <li><strong>6.</strong> Track open rates and replies</li>
+            </ul>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<EmailCalendar />);
+  </script>
+</body>
+</html>
